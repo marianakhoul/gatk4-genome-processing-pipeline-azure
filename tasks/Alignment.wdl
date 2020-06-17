@@ -17,10 +17,13 @@ version 1.0
 
 #import "../structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_dev/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
+  input {
+    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.5-1590104571-msopt"
+  }
   command {
     # not setting set -o pipefail here because /bwa has a rc=1 and we dont want to allow rc=1 to succeed because
     # the sed may also fail with that error and that is something we actually want to fail on.
@@ -29,7 +32,7 @@ task GetBwaVersion {
     sed 's/Version: //'
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: bwa_docker
     memory: "1 GB"
   }
   output {
@@ -52,6 +55,8 @@ task SamToFastqAndBwaMemAndMba {
 
     Int compression_level
     Int preemptible_tries
+
+    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.5-1590104571-msopt"
   }
 
   Float unmapped_bam_size = size(input_bam, "GB")
@@ -115,7 +120,7 @@ task SamToFastqAndBwaMemAndMba {
     fi
   >>>
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: bwa_docker
     preemptible: true
     maxRetries: preemptible_tries
     memory: "14 GB"
