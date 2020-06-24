@@ -33,7 +33,7 @@ task GetBwaVersion {
   }
   runtime {
     docker: bwa_docker
-    memory: "1 GB"
+    memory: "4 GB"
   }
   output {
     String bwa_version = read_string(stdout())
