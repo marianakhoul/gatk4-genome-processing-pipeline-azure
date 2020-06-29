@@ -93,7 +93,7 @@ task HaplotypeCaller_GATK4_VCF {
     Boolean make_bamout
     Int preemptible_tries
     Int hc_scatter
-    String gatk_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.5-1590104571-msopt"
+    String gatk_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
   }
 
   String output_suffix = if make_gvcf then ".g.vcf.gz" else ".vcf.gz"
