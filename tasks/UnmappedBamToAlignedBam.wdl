@@ -46,11 +46,15 @@ workflow UnmappedBamToAlignedBam {
     File? haplotype_database_file
     Float lod_threshold
     String recalibrated_bam_basename
+
+    String bwa_commandline 
+    String bwa_cores
   }
 
   Float cutoff_for_large_rg_in_gb = 20.0
 
-  String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
+#  String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
+#  String bwa_cores = "16"
 
   Int compression_level = 2
 
@@ -100,7 +104,8 @@ workflow UnmappedBamToAlignedBam {
           reference_fasta = references.reference_fasta,
           bwa_version = GetBwaVersion.bwa_version,
           compression_level = compression_level,
-          preemptible_tries = papi_settings.preemptible_tries
+          preemptible_tries = papi_settings.preemptible_tries,
+	  num_cores = bwa_cores
       }
     }
 

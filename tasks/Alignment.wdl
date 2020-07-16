@@ -57,6 +57,7 @@ task SamToFastqAndBwaMemAndMba {
     Int preemptible_tries
 
     String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String num_cores = "16"
   }
 
   Float unmapped_bam_size = size(input_bam, "GB")
@@ -124,7 +125,7 @@ task SamToFastqAndBwaMemAndMba {
     preemptible: true
     maxRetries: preemptible_tries
     memory: "14 GB"
-    cpu: "16"
+    cpu: num_cores
     disk: disk_size + " GB"
   }
   output {

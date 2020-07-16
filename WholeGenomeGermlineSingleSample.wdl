@@ -56,6 +56,8 @@ workflow WholeGenomeGermlineSingleSample {
     File? haplotype_database_file
     Boolean provide_bam_output = false
     Boolean use_gatk3_haplotype_caller = false
+    String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
+    String bwa_cores = "16"
   }
 
   # Not overridable:
@@ -77,7 +79,10 @@ workflow WholeGenomeGermlineSingleSample {
       cross_check_fingerprints_by = cross_check_fingerprints_by,
       haplotype_database_file     = haplotype_database_file,
       lod_threshold               = lod_threshold,
-      recalibrated_bam_basename   = recalibrated_bam_basename
+      recalibrated_bam_basename   = recalibrated_bam_basename,
+
+      bwa_commandline = bwa_commandline,
+      bwa_cores = bwa_cores
   }
 
   call AggregatedQC.AggregatedBamQC {
