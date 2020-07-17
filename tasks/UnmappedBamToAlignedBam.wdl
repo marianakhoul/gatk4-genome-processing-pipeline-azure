@@ -49,6 +49,7 @@ workflow UnmappedBamToAlignedBam {
 
     String bwa_commandline 
     String bwa_cores
+    String bwa_docker 
   }
 
   Float cutoff_for_large_rg_in_gb = 20.0
@@ -60,7 +61,10 @@ workflow UnmappedBamToAlignedBam {
 
   # Get the version of BWA to include in the PG record in the header of the BAM produced
   # by MergeBamAlignment.
-  call Alignment.GetBwaVersion
+  call Alignment.GetBwaVersion {
+    input:
+      bwa_docker = bwa_docker
+    }
 
   # Get the size of the standard reference files as well as the additional reference files needed for BWA
 
@@ -105,7 +109,8 @@ workflow UnmappedBamToAlignedBam {
           bwa_version = GetBwaVersion.bwa_version,
           compression_level = compression_level,
           preemptible_tries = papi_settings.preemptible_tries,
-	  num_cores = bwa_cores
+	  num_cores = bwa_cores,
+          bwa_docker = bwa_docker
       }
     }
 

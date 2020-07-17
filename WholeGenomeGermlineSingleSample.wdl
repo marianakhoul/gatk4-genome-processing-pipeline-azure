@@ -56,8 +56,10 @@ workflow WholeGenomeGermlineSingleSample {
     File? haplotype_database_file
     Boolean provide_bam_output = false
     Boolean use_gatk3_haplotype_caller = false
+
     String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
     String bwa_cores = "16"
+    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
   }
 
   # Not overridable:
@@ -82,7 +84,8 @@ workflow WholeGenomeGermlineSingleSample {
       recalibrated_bam_basename   = recalibrated_bam_basename,
 
       bwa_commandline = bwa_commandline,
-      bwa_cores = bwa_cores
+      bwa_cores = bwa_cores,
+      bwa_docker = bwa_docker
   }
 
   call AggregatedQC.AggregatedBamQC {
