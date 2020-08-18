@@ -17,7 +17,7 @@ version 1.0
 
 #import "../structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplit/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
