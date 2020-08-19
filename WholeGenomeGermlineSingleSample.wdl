@@ -35,12 +35,12 @@ version 1.0
 #import "./tasks/VariantCalling.wdl" as ToGvcf
 #import "./structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/AggregatedBamQC.wdl" as AggregatedQC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/BamToCram.wdl" as ToCram
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/VariantCalling.wdl" as ToGvcf
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/AggregatedBamQC.wdl" as AggregatedQC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/VariantCalling.wdl" as ToGvcf
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow WholeGenomeGermlineSingleSample {
@@ -60,6 +60,11 @@ workflow WholeGenomeGermlineSingleSample {
     String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
     String bwa_cores = "16"
     String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+
+
+    Float large_bam_in_gb = 20.0
+
+
   }
 
   # Not overridable:
@@ -85,7 +90,9 @@ workflow WholeGenomeGermlineSingleSample {
 
       bwa_commandline = bwa_commandline,
       bwa_cores = bwa_cores,
-      bwa_docker = bwa_docker
+      bwa_docker = bwa_docker,
+
+      cutoff_for_large_rg_in_gb = large_bam_in_gb
   }
 
 
@@ -95,7 +102,7 @@ workflow WholeGenomeGermlineSingleSample {
       evaluation_interval_list = references.evaluation_interval_list,
       haplotype_scatter_count = references.haplotype_scatter_count,
       break_bands_at_multiples_of = references.break_bands_at_multiples_of,
-      contamination = UnmappedBamToAlignedBam.contamination,
+#      contamination = UnmappedBamToAlignedBam.contamination,
       input_bam = UnmappedBamToAlignedBam.output_bam,
       input_bam_index = UnmappedBamToAlignedBam.output_bam_index,
       ref_fasta = references.reference_fasta.ref_fasta,
@@ -116,22 +123,6 @@ workflow WholeGenomeGermlineSingleSample {
 
   # Outputs that will be retained when execution is complete 
   output {
-    Array[File] quality_yield_metrics = UnmappedBamToAlignedBam.quality_yield_metrics
-
-    Array[File] unsorted_read_group_base_distribution_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_pdf
-    Array[File] unsorted_read_group_base_distribution_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_metrics
-    Array[File] unsorted_read_group_insert_size_histogram_pdf = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_histogram_pdf
-    Array[File] unsorted_read_group_insert_size_metrics = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_metrics
-    Array[File] unsorted_read_group_quality_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_pdf
-    Array[File] unsorted_read_group_quality_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_metrics
-    Array[File] unsorted_read_group_quality_distribution_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_pdf
-    Array[File] unsorted_read_group_quality_distribution_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_metrics
-
-    File? cross_check_fingerprints_metrics = UnmappedBamToAlignedBam.cross_check_fingerprints_metrics
-
-    File selfSM = UnmappedBamToAlignedBam.selfSM
-    Float contamination = UnmappedBamToAlignedBam.contamination
-
     File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
     File output_bqsr_reports = UnmappedBamToAlignedBam.output_bqsr_reports
 

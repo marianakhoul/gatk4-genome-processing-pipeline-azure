@@ -71,5 +71,5 @@
     "preemptible_tries": 3,
     "agg_preemptible_tries": 3
   },
-  "WholeGenomeGermlineSingleSample.bwa_docker": "bwaoptimized.azurecr.io/genomes-in-the-cloud@sha256:ecfdddcdecce4ae5e8fc54d5f1cbda19cc3007f041c2d3b50bea9972d0da04c5"
+  "WholeGenomeGermlineSingleSample.large_bam_in_gb": 100.0
 }

@@ -5,10 +5,10 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "./BamProcessing.wdl" as BamProcessing
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/GermlineVariantDiscovery.wdl" as Calling
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitEasyReduce/tasks/BamProcessing.wdl" as BamProcessing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/GermlineVariantDiscovery.wdl" as Calling
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamProcessing.wdl" as BamProcessing
 
 workflow VariantCalling {
 
@@ -124,38 +124,13 @@ workflow VariantCalling {
     }
   }
 
-  # Validate the (g)VCF output of HaplotypeCaller
-  call QC.ValidateVCF as ValidateVCF {
-    input:
-      input_vcf = MergeVCFs.output_vcf,
-      input_vcf_index = MergeVCFs.output_vcf_index,
-      dbsnp_vcf = dbsnp_vcf,
-      dbsnp_vcf_index = dbsnp_vcf_index,
-      ref_fasta = ref_fasta,
-      ref_fasta_index = ref_fasta_index,
-      ref_dict = ref_dict,
-      calling_interval_list = calling_interval_list,
-      is_gvcf = make_gvcf,
-      preemptible_tries = agg_preemptible_tries
-  }
+  # Validate the (g)VCF output of HaplotypeCaller - removed
 
-  # QC the (g)VCF
-  call QC.CollectVariantCallingMetrics as CollectVariantCallingMetrics {
-    input:
-      input_vcf = MergeVCFs.output_vcf,
-      input_vcf_index = MergeVCFs.output_vcf_index,
-      metrics_basename = final_vcf_base_name,
-      dbsnp_vcf = dbsnp_vcf,
-      dbsnp_vcf_index = dbsnp_vcf_index,
-      ref_dict = ref_dict,
-      evaluation_interval_list = evaluation_interval_list,
-      is_gvcf = make_gvcf,
-      preemptible_tries = agg_preemptible_tries
+
+  # QC the (g)VCF - removed
   }
 
   output {
-    File vcf_summary_metrics = CollectVariantCallingMetrics.summary_metrics
-    File vcf_detail_metrics = CollectVariantCallingMetrics.detail_metrics
     File output_vcf = MergeVCFs.output_vcf
     File output_vcf_index = MergeVCFs.output_vcf_index
     File? bamout = MergeBamouts.output_bam
