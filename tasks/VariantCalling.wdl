@@ -128,7 +128,6 @@ workflow VariantCalling {
 
 
   # QC the (g)VCF - removed
-  }
 
   output {
     File output_vcf = MergeVCFs.output_vcf
