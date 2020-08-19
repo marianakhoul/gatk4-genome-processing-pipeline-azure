@@ -116,7 +116,7 @@ workflow UnmappedBamToAlignedBam {
     Float mapped_bam_size = size(output_aligned_bam, "GB")
 
     # QC the aligned but unsorted readgroup BAM - removed
-
+  }
 
   # Sum the read group bam sizes to approximate the aggregated bam size
   call Utils.SumFloats as SumFloats {
