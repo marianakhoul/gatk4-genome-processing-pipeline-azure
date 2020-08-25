@@ -23,12 +23,12 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "../structs/GermlineStructs.wdl" as Structs
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/SplitLargeReadGroup.wdl" as SplitRG
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/SplitLargeReadGroup.wdl" as SplitRG
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/structs/GermlineStructs.wdl" as Structs
 
 # WORKFLOW DEFINITION
 workflow UnmappedBamToAlignedBam {

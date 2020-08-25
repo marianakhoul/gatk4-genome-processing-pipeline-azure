@@ -3,8 +3,8 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "./Qc.wdl" as QC
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Qc.wdl" as QC
 
 workflow BamToCram {
 

@@ -1,6 +1,6 @@
 {
-  "WorkflowUrl": "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/WholeGenomeGermlineSingleSample.wdl",
-  "WorkflowInputsUrl": "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/WholeGenomeGermlineSingleSample.nosplit.inputs.json",
+  "WorkflowUrl": "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/WholeGenomeGermlineSingleSample.wdl",
+  "WorkflowInputsUrl": "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/WholeGenomeGermlineSingleSample.nosplit.inputs.json",
   "WorkflowOptionsUrl": null,
   "WorkflowDependenciesUrl": null
 }

@@ -5,10 +5,10 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "./BamProcessing.wdl" as BamProcessing
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/GermlineVariantDiscovery.wdl" as Calling
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamProcessing.wdl" as BamProcessing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/GermlineVariantDiscovery.wdl" as Calling
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/BamProcessing.wdl" as BamProcessing
 
 workflow VariantCalling {
 

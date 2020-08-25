@@ -35,12 +35,12 @@ version 1.0
 #import "./tasks/VariantCalling.wdl" as ToGvcf
 #import "./structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/AggregatedBamQC.wdl" as AggregatedQC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamToCram.wdl" as ToCram
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/VariantCalling.wdl" as ToGvcf
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/AggregatedBamQC.wdl" as AggregatedQC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/tasks/VariantCalling.wdl" as ToGvcf
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceNoMerge/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow WholeGenomeGermlineSingleSample {
