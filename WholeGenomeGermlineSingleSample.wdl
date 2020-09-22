@@ -60,6 +60,7 @@ workflow WholeGenomeGermlineSingleSample {
     String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
     String bwa_cores = "16"
     String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String haplotype_caller_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
 
 
     Float large_bam_in_gb = 20.0
@@ -113,7 +114,9 @@ workflow WholeGenomeGermlineSingleSample {
       base_file_name = sample_and_unmapped_bams.base_file_name,
       final_vcf_base_name = sample_and_unmapped_bams.final_gvcf_base_name,
       agg_preemptible_tries = papi_settings.agg_preemptible_tries,
-      use_gatk3_haplotype_caller = use_gatk3_haplotype_caller
+      use_gatk3_haplotype_caller = use_gatk3_haplotype_caller, 
+
+      haplotype_caller_docker = haplotype_caller_docker
   }
 
   if (provide_bam_output) {

@@ -31,6 +31,7 @@ workflow VariantCalling {
     Boolean make_gvcf = true
     Boolean make_bamout = false
     Boolean use_gatk3_haplotype_caller = false
+    String haplotype_caller_docker
   }
 
   parameter_meta {
@@ -87,7 +88,8 @@ workflow VariantCalling {
           hc_scatter = hc_divisor,
           make_gvcf = make_gvcf,
           make_bamout = make_bamout,
-          preemptible_tries = agg_preemptible_tries
+          preemptible_tries = agg_preemptible_tries,
+          gatk_docker = haplotype_caller_docker
        }
 
       # If bamout files were created, we need to sort and gather them into one bamout
