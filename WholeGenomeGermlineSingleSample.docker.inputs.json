@@ -71,6 +71,6 @@
     "preemptible_tries": 3,
     "agg_preemptible_tries": 3
   },
-  "WholeGenomeGermlineSingleSample.bwa_docker": "bwaoptimized.azurecr.io/bwagatk_msopt:0.9",
-  "WholeGenomeGermlineSingleSample.haplotype_caller_docker": "bwaoptimized.azurecr.io/bwagatk_msopt:0.9"
+  "WholeGenomeGermlineSingleSample.bwa_docker": "bwaoptimized.azurecr.io/bwagatk_msopt:0.9.1",
+  "WholeGenomeGermlineSingleSample.haplotype_caller_docker": "bwaoptimized.azurecr.io/bwagatk_msopt:0.9.1"
 }
