@@ -5,10 +5,9 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "./BamProcessing.wdl" as BamProcessing
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/GermlineVariantDiscovery.wdl" as Calling
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamProcessing.wdl" as BamProcessing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/GermlineVariantDiscovery.wdl" as Calling
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/BamProcessing.wdl" as BamProcessing
 
 workflow VariantCalling {
 
@@ -34,9 +33,6 @@ workflow VariantCalling {
     String haplotype_caller_docker
   }
 
-  parameter_meta {
-    make_bamout: "For CNNScoreVariants to run with a 2D model, a bamout must be created by HaplotypeCaller. The bamout is a bam containing information on how HaplotypeCaller remapped reads while it was calling variants. See https://gatkforums.broadinstitute.org/gatk/discussion/5484/howto-generate-a-bamout-file-showing-how-haplotypecaller-has-remapped-sequence-reads for more details."
-  }
 
   # Break the calling interval_list into sub-intervals
   # Perform variant calling on the sub-intervals, and then gather the results

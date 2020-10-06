@@ -16,19 +16,11 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-#import "./Alignment.wdl" as Alignment
-#import "./SplitLargeReadGroup.wdl" as SplitRG
-#import "./Qc.wdl" as QC
-#import "./BamProcessing.wdl" as Processing
-#import "./Utilities.wdl" as Utils
-#import "../structs/GermlineStructs.wdl" as Structs
-
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/SplitLargeReadGroup.wdl" as SplitRG
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/SplitLargeReadGroup.wdl" as SplitRG
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/structs/GermlineStructs.wdl" as Structs
 
 # WORKFLOW DEFINITION
 workflow UnmappedBamToAlignedBam {
@@ -38,13 +30,6 @@ workflow UnmappedBamToAlignedBam {
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
 
-    File contamination_sites_ud
-    File contamination_sites_bed
-    File contamination_sites_mu
-
-    String cross_check_fingerprints_by
-    File? haplotype_database_file
-    Float lod_threshold
     String recalibrated_bam_basename
 
     String bwa_commandline 
@@ -53,11 +38,6 @@ workflow UnmappedBamToAlignedBam {
 
     Float cutoff_for_large_rg_in_gb
   }
-
-#  Float cutoff_for_large_rg_in_gb = 20.0
-
-#  String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
-#  String bwa_cores = "16"
 
   Int compression_level = 2
 

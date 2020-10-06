@@ -17,7 +17,7 @@ version 1.0
 
 #import "../structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
@@ -77,42 +77,7 @@ task SamToFastqAndBwaMemAndMba {
     bash_ref_fasta=~{reference_fasta.ref_fasta}
     # if reference_fasta.ref_alt has data in it,
     if [ -s ~{reference_fasta.ref_alt} ]; then
- #     java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
- #       SamToFastq \
- #       INPUT=~{input_bam} \
- #       FASTQ=/dev/stdout \
- #       INTERLEAVE=true \
- #       NON_PF=true | \
- #     /usr/gitc/~{bwa_commandline} /dev/stdin - 2> >(tee ~{output_bam_basename}.bwa.stderr.log >&2) | \
- #     java -Dsamjdk.compression_level=~{compression_level} -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
- #       MergeBamAlignment \
- #       VALIDATION_STRINGENCY=SILENT \
- #       EXPECTED_ORIENTATIONS=FR \
- #       ATTRIBUTES_TO_RETAIN=X0 \
- #       ATTRIBUTES_TO_REMOVE=NM \
- #       ATTRIBUTES_TO_REMOVE=MD \
- #       ALIGNED_BAM=/dev/stdin \
- #       UNMAPPED_BAM=~{input_bam} \
- #       OUTPUT=~{output_bam_basename}.bam \
- #       REFERENCE_SEQUENCE=~{reference_fasta.ref_fasta} \
- #       PAIRED_RUN=true \
- #       SORT_ORDER="unsorted" \
- #       IS_BISULFITE_SEQUENCE=false \
- #       ALIGNED_READS_ONLY=false \
- #       CLIP_ADAPTERS=false \
- #       MAX_RECORDS_IN_RAM=2000000 \
- #       ADD_MATE_CIGAR=true \
- #       MAX_INSERTIONS_OR_DELETIONS=-1 \
- #       PRIMARY_ALIGNMENT_STRATEGY=MostDistant \
- #       PROGRAM_RECORD_ID="bwamem" \
- #       PROGRAM_GROUP_VERSION="~{bwa_version}" \
- #       PROGRAM_GROUP_COMMAND_LINE="~{bwa_commandline}" \
- #       PROGRAM_GROUP_NAME="bwamem" \
- #       UNMAPPED_READ_STRATEGY=COPY_TO_TAG \
- #       ALIGNER_PROPER_PAIR_FLAGS=true \
- #       UNMAP_CONTAMINANT_READS=true \
- #       ADD_PG_TAG_TO_READS=false
-      java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
+       java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
         SamToFastq \
         INPUT=~{input_bam} \
         FASTQ=toAlign.fastq \
@@ -167,8 +132,8 @@ task SamToFastqAndBwaMemAndMba {
   output {
     File output_bam = "~{output_bam_basename}.bam"
  #   File bwa_stderr_log = "~{output_bam_basename}.bwa.stderr.log"
-    File fastq = "toAlign.fastq"
-    File sam = "aligned.sam"
+ #   File fastq = "toAlign.fastq"
+ #   File sam = "aligned.sam"
   }
 }
 

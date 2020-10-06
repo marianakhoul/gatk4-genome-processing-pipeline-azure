@@ -32,11 +32,6 @@
   },
 
   "WholeGenomeGermlineSingleSample.references": {
-    "fingerprint_genotypes_file": "/msgenpublicdata/inputs/dsde-data-na12878-public/NA12878.hg38.reference.fingerprint.vcf",
-    "fingerprint_genotypes_index": "/msgenpublicdata/inputs/dsde-data-na12878-public/NA12878.hg38.reference.fingerprint.vcf.idx",
-    "contamination_sites_ud": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.contam.UD",
-    "contamination_sites_bed": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.contam.bed",
-    "contamination_sites_mu": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.contam.mu",
     "calling_interval_list": "/msgenpublicdata/inputs/broad-references/hg38/v0/wgs_calling_regions.hg38.interval_list",
     "haplotype_scatter_count": 10,
     "break_bands_at_multiples_of": 100000,
@@ -63,9 +58,6 @@
     "dbsnp_vcf_index": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx",
     "evaluation_interval_list": "/msgenpublicdata/inputs/broad-references/hg38/v0/wgs_evaluation_regions.hg38.interval_list"
   },
-
-  "WholeGenomeGermlineSingleSample.wgs_coverage_interval_list": "/msgenpublicdata/inputs/broad-references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
-  "WholeGenomeGermlineSingleSample.haplotype_database_file": "/msgenpublicdata/inputs/broad-references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
 
   "WholeGenomeGermlineSingleSample.papi_settings": {
     "preemptible_tries": 3,

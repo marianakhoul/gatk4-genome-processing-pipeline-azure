@@ -29,18 +29,12 @@ version 1.0
 ## licensing information pertaining to the included programs.
 
 #import "./tasks/UnmappedBamToAlignedBam.wdl" as ToBam
-#import "./tasks/AggregatedBamQC.wdl" as AggregatedQC
-#import "./tasks/Qc.wdl" as QC
-#import "./tasks/BamToCram.wdl" as ToCram
 #import "./tasks/VariantCalling.wdl" as ToGvcf
 #import "./structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/AggregatedBamQC.wdl" as AggregatedQC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/BamToCram.wdl" as ToCram
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/tasks/VariantCalling.wdl" as ToGvcf
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduce/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/VariantCalling.wdl" as ToGvcf
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow WholeGenomeGermlineSingleSample {
@@ -51,9 +45,7 @@ workflow WholeGenomeGermlineSingleSample {
     SampleAndUnmappedBams sample_and_unmapped_bams
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
-    File wgs_coverage_interval_list
 
-    File? haplotype_database_file
     Boolean provide_bam_output = false
     Boolean use_gatk3_haplotype_caller = false
 
@@ -62,16 +54,15 @@ workflow WholeGenomeGermlineSingleSample {
     String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
     String haplotype_caller_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
 
-
     Float large_bam_in_gb = 20.0
 
 
   }
 
   # Not overridable:
-  Int read_length = 250
-  Float lod_threshold = -20.0
-  String cross_check_fingerprints_by = "READGROUP"
+#  Int read_length = 250
+#  Float lod_threshold = -20.0
+#  String cross_check_fingerprints_by = "READGROUP"
   String recalibrated_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicates_marked.recalibrated"
 
   call ToBam.UnmappedBamToAlignedBam {
@@ -80,13 +71,6 @@ workflow WholeGenomeGermlineSingleSample {
       references                  = references,
       papi_settings               = papi_settings,
 
-      contamination_sites_ud = references.contamination_sites_ud,
-      contamination_sites_bed = references.contamination_sites_bed,
-      contamination_sites_mu = references.contamination_sites_mu,
-
-      cross_check_fingerprints_by = cross_check_fingerprints_by,
-      haplotype_database_file     = haplotype_database_file,
-      lod_threshold               = lod_threshold,
       recalibrated_bam_basename   = recalibrated_bam_basename,
 
       bwa_commandline = bwa_commandline,
@@ -103,7 +87,6 @@ workflow WholeGenomeGermlineSingleSample {
       evaluation_interval_list = references.evaluation_interval_list,
       haplotype_scatter_count = references.haplotype_scatter_count,
       break_bands_at_multiples_of = references.break_bands_at_multiples_of,
-#      contamination = UnmappedBamToAlignedBam.contamination,
       input_bam = UnmappedBamToAlignedBam.output_bam,
       input_bam_index = UnmappedBamToAlignedBam.output_bam_index,
       ref_fasta = references.reference_fasta.ref_fasta,
