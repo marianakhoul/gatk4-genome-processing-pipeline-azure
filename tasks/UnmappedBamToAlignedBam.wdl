@@ -106,8 +106,8 @@ workflow UnmappedBamToAlignedBam {
   }
 
   # MarkDuplicates and SortSam currently take too long for preemptibles if the input data is too large
-  Float gb_size_cutoff_for_preemptibles = 110.0
-  Boolean data_too_large_for_preemptibles = SumFloats.total_size > gb_size_cutoff_for_preemptibles
+  #Float gb_size_cutoff_for_preemptibles = 110.0
+  #Boolean data_too_large_for_preemptibles = SumFloats.total_size > gb_size_cutoff_for_preemptibles
 
   # Aggregate aligned+merged flowcell BAM files and mark duplicates
   # We take advantage of the tool's ability to take multiple BAM inputs and write out a single output
@@ -119,7 +119,7 @@ workflow UnmappedBamToAlignedBam {
       metrics_filename = sample_and_unmapped_bams.base_file_name + ".duplicate_metrics",
       total_input_size = SumFloats.total_size,
       compression_level = compression_level,
-      preemptible_tries = if data_too_large_for_preemptibles then 0 else papi_settings.agg_preemptible_tries
+      preemptible_tries = papi_settings.agg_preemptible_tries
   }
 
   # Sort aggregated+deduped BAM file and fix tags
@@ -128,7 +128,7 @@ workflow UnmappedBamToAlignedBam {
       input_bam = MarkDuplicates.output_bam,
       output_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicate_marked.sorted",
       compression_level = compression_level,
-      preemptible_tries = if data_too_large_for_preemptibles then 0 else papi_settings.agg_preemptible_tries
+      preemptible_tries = papi_settings.agg_preemptible_tries
   }
 
   Float agg_bam_size = size(SortSampleBam.output_bam, "GB")
