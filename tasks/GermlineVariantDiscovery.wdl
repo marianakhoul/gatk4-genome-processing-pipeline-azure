@@ -112,10 +112,11 @@ task HaplotypeCaller_GATK4_VCF {
 
   command <<<
     set -e
-    java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true \
-      -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=1 -Dsnappy.disable=true \
-      -Xms6000m -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10 \
-      -jar /usr/gitc/gatk4/gatk-package-4.1.7.0-mgl-local.jar \
+#    java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true \
+#      -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=1 -Dsnappy.disable=true \
+#      -Xms6000m -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10 \
+#      -jar /usr/gitc/gatk4/gatk-package-4.1.7.0-mgl-local.jar \
+      gatk --java-options "-Xms6000m -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10" \
       HaplotypeCaller \
       -R ~{ref_fasta} \
       -I ~{input_bam} \
