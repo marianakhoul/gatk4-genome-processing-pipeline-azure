@@ -71,7 +71,9 @@ workflow UnmappedBamToAlignedBam {
           output_bam_basename = unmapped_bam_basename + ".aligned.unsorted",
           reference_fasta = references.reference_fasta,
           compression_level = compression_level,
-          preemptible_tries = papi_settings.preemptible_tries
+          preemptible_tries = papi_settings.preemptible_tries,
+	  num_cores = bwa_cores,
+          bwa_docker = bwa_docker
       }
     }
 

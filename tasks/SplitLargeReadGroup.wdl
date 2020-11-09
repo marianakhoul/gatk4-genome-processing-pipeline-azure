@@ -1,4 +1,4 @@
-version 1.0
+dversion 1.0
 
 ## Copyright Broad Institute, 2018
 ##
@@ -42,6 +42,9 @@ workflow SplitLargeReadGroup {
     Int compression_level
     Int preemptible_tries
     Int reads_per_file = 48000000
+
+    String bwa_docker 
+    String num_cores 
   }
 
   call Alignment.SamSplitter as SamSplitter {
@@ -64,7 +67,9 @@ workflow SplitLargeReadGroup {
         reference_fasta = reference_fasta,
         bwa_version = bwa_version,
         compression_level = compression_level,
-        preemptible_tries = preemptible_tries
+        preemptible_tries = preemptible_tries,
+	num_cores = bwa_cores,
+        bwa_docker = bwa_docker
     }
 
     Float current_mapped_size = size(SamToFastqAndBwaMemAndMba.output_bam, "GB")
