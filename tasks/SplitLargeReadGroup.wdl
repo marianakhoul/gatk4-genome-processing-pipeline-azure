@@ -68,7 +68,7 @@ workflow SplitLargeReadGroup {
         bwa_version = bwa_version,
         compression_level = compression_level,
         preemptible_tries = preemptible_tries,
-	num_cores = bwa_cores,
+	num_cores = num_cores,
         bwa_docker = bwa_docker
     }
 
