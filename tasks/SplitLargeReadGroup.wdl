@@ -1,4 +1,4 @@
-dversion 1.0
+version 1.0
 
 ## Copyright Broad Institute, 2018
 ##
