@@ -17,7 +17,7 @@ version 1.0
 
 #import "../structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaPipeHardReduceClean/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
@@ -66,7 +66,7 @@ task SamToFastqAndBwaMemAndMba {
   # Sometimes the output is larger than the input, or a task can spill to disk.
   # In these cases we need to account for the input (1) and the output (1.5) or the input(1), the output(1), and spillage (.5).
   # Increased disk_multiplier after removing pipe (default value was 2.5)
-  Float disk_multiplier = 12.5
+  Float disk_multiplier = 2.5
   Int disk_size = ceil(unmapped_bam_size + bwa_ref_size + (disk_multiplier * unmapped_bam_size) + 20)
 
   command <<<
@@ -77,13 +77,13 @@ task SamToFastqAndBwaMemAndMba {
     bash_ref_fasta=~{reference_fasta.ref_fasta}
     # if reference_fasta.ref_alt has data in it,
     if [ -s ~{reference_fasta.ref_alt} ]; then
-       java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
+      java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
         SamToFastq \
         INPUT=~{input_bam} \
-        FASTQ=toAlign.fastq \
+        FASTQ=/dev/stdout \
         INTERLEAVE=true \
-        NON_PF=true 
-      /usr/gitc/~{bwa_commandline} toAlign.fastq  > aligned.sam
+        NON_PF=true | \
+      /usr/gitc/~{bwa_commandline} /dev/stdin - 2> >(tee ~{output_bam_basename}.bwa.stderr.log >&2) | \
       java -Dsamjdk.compression_level=~{compression_level} -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
         MergeBamAlignment \
         VALIDATION_STRINGENCY=SILENT \
@@ -91,7 +91,7 @@ task SamToFastqAndBwaMemAndMba {
         ATTRIBUTES_TO_RETAIN=X0 \
         ATTRIBUTES_TO_REMOVE=NM \
         ATTRIBUTES_TO_REMOVE=MD \
-        ALIGNED_BAM=aligned.sam \
+        ALIGNED_BAM=/dev/stdin \
         UNMAPPED_BAM=~{input_bam} \
         OUTPUT=~{output_bam_basename}.bam \
         REFERENCE_SEQUENCE=~{reference_fasta.ref_fasta} \
@@ -113,8 +113,9 @@ task SamToFastqAndBwaMemAndMba {
         UNMAP_CONTAMINANT_READS=true \
         ADD_PG_TAG_TO_READS=false
 
- #     grep -m1 "read .* ALT contigs" ~{output_bam_basename}.bwa.stderr.log | \
- #     grep -v "read 0 ALT contigs"
+      grep -m1 "read .* ALT contigs" ~{output_bam_basename}.bwa.stderr.log | \
+      grep -v "read 0 ALT contigs"
+
 
     # else reference_fasta.ref_alt is empty or could not be found
     else
@@ -131,7 +132,7 @@ task SamToFastqAndBwaMemAndMba {
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
- #   File bwa_stderr_log = "~{output_bam_basename}.bwa.stderr.log"
+    File bwa_stderr_log = "~{output_bam_basename}.bwa.stderr.log"
  #   File fastq = "toAlign.fastq"
  #   File sam = "aligned.sam"
   }

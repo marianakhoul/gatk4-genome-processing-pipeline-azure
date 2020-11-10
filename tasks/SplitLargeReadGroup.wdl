@@ -20,10 +20,10 @@ version 1.0
 #import "./Utilities.wdl" as Utils
 #import "../structs/GermlineStructs.wdl" as Structs
 
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaSplitHardReduceClean/structs/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaPipeHardReduceClean/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaPipeHardReduceClean/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaPipeHardReduceClean/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/om_bwaPipeHardReduceClean/structs/GermlineStructs.wdl" as Structs
 
 workflow SplitLargeReadGroup {
 
