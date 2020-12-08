@@ -15,69 +15,6 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-task HaplotypeCaller_GATK35_GVCF {
-  input {
-    File input_bam
-    File input_bam_index
-    File interval_list
-    String gvcf_basename
-    File ref_dict
-    File ref_fasta
-    File ref_fasta_index
-    Float? contamination
-    Int preemptible_tries
-    Int hc_scatter
-  }
-
-  parameter_meta {
-    input_bam: {
-      localization_optional: true
-    }
-  }
-
-  Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
-  Int disk_size = ceil(size(input_bam, "GB") + 30 + size(input_bam_index, "GB")+ ref_size) + 20
-
-  # We use interval_padding 500 below to make sure that the HaplotypeCaller has context on both sides around
-  # the interval because the assembly uses them.
-  #
-  # Using PrintReads is a temporary solution until we update HaploypeCaller to use GATK4. Once that is done,
-  # HaplotypeCaller can stream the required intervals directly from the cloud.
-  command {
-    /usr/gitc/gatk4/gatk-launch --javaOptions "-Xms2g" \
-      PrintReads \
-      -I ~{input_bam} \
-      --interval_padding 500 \
-      -L ~{interval_list} \
-      -O local.sharded.bam \
-    && \
-    java -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10 -Xms8000m \
-      -jar /usr/gitc/GATK35.jar \
-      -T HaplotypeCaller \
-      -R ~{ref_fasta} \
-      -o ~{gvcf_basename}.vcf.gz \
-      -I local.sharded.bam \
-      -L ~{interval_list} \
-      -ERC GVCF \
-      --max_alternate_alleles 3 \
-      -variant_index_parameter 128000 \
-      -variant_index_type LINEAR \
-      -contamination ~{default=0 contamination} \
-      --read_filter OverclippedRead
-  }
-  runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
-    preemptible: true
-    maxRetries: preemptible_tries
-    memory: "10 GB"
-    cpu: "1"
-    disk: disk_size + " GB"
-  }
-  output {
-    File output_gvcf = "~{gvcf_basename}.vcf.gz"
-    File output_gvcf_index = "~{gvcf_basename}.vcf.gz.tbi"
-  }
-}
 
 task HaplotypeCaller_GATK4_VCF {
   input {
@@ -93,7 +30,7 @@ task HaplotypeCaller_GATK4_VCF {
     Boolean make_bamout
     Int preemptible_tries
     Int hc_scatter
-    String gatk_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String gatk_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
   }
 
   String output_suffix = if make_gvcf then ".g.vcf.gz" else ".vcf.gz"
@@ -112,10 +49,6 @@ task HaplotypeCaller_GATK4_VCF {
 
   command <<<
     set -e
-#    java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true \
-#      -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=1 -Dsnappy.disable=true \
-#      -Xms6000m -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10 \
-#      -jar /usr/gitc/gatk4/gatk-package-4.1.7.0-mgl-local.jar \
       gatk --java-options "-Xms6000m -XX:GCTimeLimit=50 -XX:GCHeapFreeLimit=10" \
       HaplotypeCaller \
       -R ~{ref_fasta} \
