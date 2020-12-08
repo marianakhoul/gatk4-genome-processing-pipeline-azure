@@ -80,8 +80,8 @@ workflow VariantCalling {
       }
     
 
-    File vcfs_to_merge = select_first([HaplotypeCallerGATK3.output_gvcf, HaplotypeCallerGATK4.output_vcf])
-    File vcf_indices_to_merge = select_first([HaplotypeCallerGATK3.output_gvcf_index, HaplotypeCallerGATK4.output_vcf_index])
+    File vcfs_to_merge = HaplotypeCallerGATK4.output_vcf
+    File vcf_indices_to_merge = HaplotypeCallerGATK4.output_vcf_index
   }
 
   # Combine by-interval (g)VCFs into a single sample (g)VCF file
