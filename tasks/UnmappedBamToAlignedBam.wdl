@@ -72,7 +72,7 @@ workflow UnmappedBamToAlignedBam {
           reference_fasta = references.reference_fasta,
           compression_level = compression_level,
           preemptible_tries = papi_settings.preemptible_tries,
-	  num_cores = bwa_cores,
+	        num_cores = bwa_cores,
           bwa_docker = bwa_docker
       }
     }
@@ -88,7 +88,7 @@ workflow UnmappedBamToAlignedBam {
           bwa_version = GetBwaVersion.bwa_version,
           compression_level = compression_level,
           preemptible_tries = papi_settings.preemptible_tries,
-	  num_cores = bwa_cores,
+	        num_cores = bwa_cores,
           bwa_docker = bwa_docker
       }
     }
@@ -163,8 +163,6 @@ workflow UnmappedBamToAlignedBam {
         sequence_group_interval = subgroup,
         dbsnp_vcf = references.dbsnp_vcf,
         dbsnp_vcf_index = references.dbsnp_vcf_index,
-        known_indels_sites_vcfs = references.known_indels_sites_vcfs,
-        known_indels_sites_indices = references.known_indels_sites_indices,
         ref_dict = references.reference_fasta.ref_dict,
         ref_fasta = references.reference_fasta.ref_fasta,
         ref_fasta_index = references.reference_fasta.ref_fasta_index,
