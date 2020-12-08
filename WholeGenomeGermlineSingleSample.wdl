@@ -47,12 +47,11 @@ workflow WholeGenomeGermlineSingleSample {
     PapiSettings papi_settings
 
     Boolean provide_bam_output = false
-    Boolean use_gatk3_haplotype_caller = false
 
     String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
     String bwa_cores = "16"
-    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
-    String haplotype_caller_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String bwa_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
+    String haplotype_caller_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
 
     Float large_bam_in_gb = 20.0
 
@@ -84,7 +83,6 @@ workflow WholeGenomeGermlineSingleSample {
   call ToGvcf.VariantCalling as BamToGvcf {
     input:
       calling_interval_list = references.calling_interval_list,
-      evaluation_interval_list = references.evaluation_interval_list,
       haplotype_scatter_count = references.haplotype_scatter_count,
       break_bands_at_multiples_of = references.break_bands_at_multiples_of,
       input_bam = UnmappedBamToAlignedBam.output_bam,
@@ -97,8 +95,6 @@ workflow WholeGenomeGermlineSingleSample {
       base_file_name = sample_and_unmapped_bams.base_file_name,
       final_vcf_base_name = sample_and_unmapped_bams.final_gvcf_base_name,
       agg_preemptible_tries = papi_settings.agg_preemptible_tries,
-      use_gatk3_haplotype_caller = use_gatk3_haplotype_caller, 
-
       haplotype_caller_docker = haplotype_caller_docker
   }
 
