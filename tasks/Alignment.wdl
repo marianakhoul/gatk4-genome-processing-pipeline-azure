@@ -22,7 +22,7 @@ import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipe
 # Get version of BWA
 task GetBwaVersion {
   input {
-    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String bwa_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
   }
   command {
     # not setting set -o pipefail here because /bwa has a rc=1 and we dont want to allow rc=1 to succeed because
@@ -56,7 +56,7 @@ task SamToFastqAndBwaMemAndMba {
     Int compression_level
     Int preemptible_tries
 
-    String bwa_docker = "bwaoptimized.azurecr.io/genomes-in-the-cloud:2.4.3-1564508330-msopt"
+    String bwa_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
     String num_cores = "16"
   }
 
@@ -133,8 +133,6 @@ task SamToFastqAndBwaMemAndMba {
   output {
     File output_bam = "~{output_bam_basename}.bam"
     File bwa_stderr_log = "~{output_bam_basename}.bwa.stderr.log"
- #   File fastq = "toAlign.fastq"
- #   File sam = "aligned.sam"
   }
 }
 

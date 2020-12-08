@@ -119,14 +119,12 @@ task BaseRecalibrator {
     Array[String] sequence_group_interval
     File dbsnp_vcf
     File dbsnp_vcf_index
-    Array[File] known_indels_sites_vcfs
-    Array[File] known_indels_sites_indices
     File ref_dict
     File ref_fasta
     File ref_fasta_index
     Int bqsr_scatter
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
   }
 
   Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
@@ -149,7 +147,6 @@ task BaseRecalibrator {
       --use-original-qualities \
       -O ~{recalibration_report_filename} \
       --known-sites ~{dbsnp_vcf} \
-      --known-sites ~{sep=" -known-sites " known_indels_sites_vcfs} \
       -L ~{sep=" -L " sequence_group_interval}
   }
   runtime {
@@ -178,7 +175,7 @@ task ApplyBQSR {
     Int compression_level
     Int bqsr_scatter
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
     Int memory_multiplier = 1
     Int additional_disk = 20							
   }
@@ -230,7 +227,7 @@ task GatherBqsrReports {
     Array[File] input_bqsr_reports
     String output_report_filename
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
   }
 
   command {
