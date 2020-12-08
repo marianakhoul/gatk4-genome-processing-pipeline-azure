@@ -13,7 +13,6 @@ workflow VariantCalling {
 
   input {
     File calling_interval_list
-    File evaluation_interval_list
     Int haplotype_scatter_count
     Int break_bands_at_multiples_of
     Float? contamination
@@ -29,7 +28,6 @@ workflow VariantCalling {
     Int agg_preemptible_tries
     Boolean make_gvcf = true
     Boolean make_bamout = false
-    Boolean use_gatk3_haplotype_caller = false
     String haplotype_caller_docker
   }
 
@@ -51,24 +49,6 @@ workflow VariantCalling {
 
   # Call variants in parallel over WGS calling intervals
   scatter (scattered_interval_list in ScatterIntervalList.out) {
-
-    if (use_gatk3_haplotype_caller) {
-      call Calling.HaplotypeCaller_GATK35_GVCF as HaplotypeCallerGATK3 {
-        input:
-        input_bam = input_bam,
-        input_bam_index = input_bam_index,
-        interval_list = scattered_interval_list,
-        gvcf_basename = base_file_name,
-        ref_dict = ref_dict,
-        ref_fasta = ref_fasta,
-        ref_fasta_index = ref_fasta_index,
-        contamination = contamination,
-        preemptible_tries = agg_preemptible_tries,
-        hc_scatter = hc_divisor
-      }
-    }
-
-    if (!use_gatk3_haplotype_caller) {
 
       # Generate GVCF by interval
       call Calling.HaplotypeCaller_GATK4_VCF as HaplotypeCallerGATK4 {
@@ -98,7 +78,7 @@ workflow VariantCalling {
             compression_level = 2
         }
       }
-    }
+    
 
     File vcfs_to_merge = select_first([HaplotypeCallerGATK3.output_gvcf, HaplotypeCallerGATK4.output_vcf])
     File vcf_indices_to_merge = select_first([HaplotypeCallerGATK3.output_gvcf_index, HaplotypeCallerGATK4.output_vcf_index])
