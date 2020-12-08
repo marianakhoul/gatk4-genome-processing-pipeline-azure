@@ -28,13 +28,8 @@ struct GermlineSingleSampleReferences {
 
   ReferenceFasta reference_fasta
 
-  Array[File] known_indels_sites_vcfs
-  Array[File] known_indels_sites_indices
-
   File dbsnp_vcf
   File dbsnp_vcf_index
-
-  File evaluation_interval_list
 }
 
 
