@@ -65,7 +65,9 @@ workflow VariantCalling {
           make_gvcf = make_gvcf,
           make_bamout = make_bamout,
           preemptible_tries = agg_preemptible_tries,
-          gatk_docker = haplotype_caller_docker
+          gatk_docker = haplotype_caller_docker,
+          dbsnp_vcf = dbsnp_vcf,
+          dbsnp_vcf_index = dbsnp_vcf_index
        }
 
       # If bamout files were created, we need to sort and gather them into one bamout

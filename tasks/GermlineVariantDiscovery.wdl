@@ -31,13 +31,15 @@ task HaplotypeCaller_GATK4_VCF {
     Int preemptible_tries
     Int hc_scatter
     String gatk_docker = "bwaoptimized.azurecr.io/bwagatk_msopt:0.91"
+    File dbsnp_vcf
+    File dbsnp_vcf_index
   }
 
   String output_suffix = if make_gvcf then ".g.vcf.gz" else ".vcf.gz"
   String output_file_name = vcf_basename + output_suffix
 
-  Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
-  Int disk_size = ceil(size(input_bam, "GB") + 30 + size(input_bam_index, "GB")+ ref_size) + 20
+  Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB") + size(dbsnp_vcf, "GB") + size(dbsnp_vcf_index, "GB")
+  Int disk_size = ceil(size(input_bam, "GB") + 30 + size(input_bam_index, "GB") + ref_size) + 20
 
   String bamout_arg = if make_bamout then "-bamout ~{vcf_basename}.bamout.bam" else ""
 
@@ -56,8 +58,7 @@ task HaplotypeCaller_GATK4_VCF {
       -L ~{interval_list} \
       -O ~{output_file_name} \
       -contamination ~{default=0 contamination} \
-      -G StandardAnnotation -G StandardHCAnnotation ~{true="-G AS_StandardAnnotation" false="" make_gvcf} \
-      -GQB 10 -GQB 20 -GQB 30 -GQB 40 -GQB 50 -GQB 60 -GQB 70 -GQB 80 -GQB 90 \
+      --dbsnp ~{dbsnp_vcf} \
       ~{true="-ERC GVCF" false="" make_gvcf} \
       ~{bamout_arg}
 
