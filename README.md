@@ -1,3 +1,4 @@
+# My own changes were made to this repo to work on my pipelines and data storage in Azure
 # Germline alignment and variant calling pipeline on Azure
 This repository is an example of running the germline alignment and variant calling pipeline, based on Best Practices Genome Analysis Pipeline by Broad Institute of MIT and Harvard, on Cromwell on Azure.<br/> 
 
